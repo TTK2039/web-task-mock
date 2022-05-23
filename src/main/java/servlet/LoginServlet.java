@@ -15,7 +15,7 @@ import util.ParamUtil;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-
+	
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 文字化け対策
         request.setCharacterEncoding("UTF-8");
@@ -42,22 +42,19 @@ public class LoginServlet extends HttpServlet {
         
         
         
-        	User user = new User(id, pass);
-        	UserService userService = new UserService();
-            User a = userService.login(user);
-            if(a != null) {
-            	session.setAttribute("user", a);
-                // 表示メッセージの受け渡し
-                request.getRequestDispatcher("menu.jsp").forward(request, response);
-            }else{
-            	msg = "ログインにしっぱいしました　";
-            	request.setAttribute("msg", msg);
-                request.getRequestDispatcher("index.jsp").forward(request, response);
+    	User user = new User(id, pass);
+    	UserService userService = new UserService();
+        User a = userService.login(user);
+        if(a != null) {
+        	session.setAttribute("user", a);
+            // 表示メッセージの受け渡し
+            request.getRequestDispatcher("menu.jsp").forward(request, response);
+        }else{
+        	msg = "ログインにしっぱいしました　";
+        	request.setAttribute("msg", msg);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
 
-            }
         }
-
     }
 
-
-
+}

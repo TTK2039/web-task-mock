@@ -18,7 +18,7 @@
     <p class="error">${msg }</p>
 
     <form action="login" method="post">
-      <fieldsets>
+      <fieldset>
         <div class="cp_iptxt">
           <input class="base_input" type="text" name="loginId" placeholder="ID">
           <i class="fa fa-user fa-lg fa-fw" aria-hidden="true"></i>
