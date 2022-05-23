@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,19 +15,19 @@
 
   <div class="login_form">
     <img src="./images/logo.png" class="login_logo">
-    <p class="error">エラーメッセージ</p>
+    <p class="error">${msg }</p>
 
-    <form action="menu.html" method="get">
-      <fieldset>
+    <form action="login" method="post">
+      <fieldsets>
         <div class="cp_iptxt">
           <input class="base_input" type="text" name="loginId" placeholder="ID">
           <i class="fa fa-user fa-lg fa-fw" aria-hidden="true"></i>
-          <div class="error">エラーメッセージ</div>
+          <div class="error">${requestScope.idError}</div>
         </div>
 
         <div>
           <input class="base_input" type="password" name="pass" placeholder="PASS">
-          <div class="error">エラーメッセージ</div>
+          <div class="error">${requestScope.passError}</div>
         </div>
       </fieldset>
       <button class="logout_btn" type="submit">ログイン</button>

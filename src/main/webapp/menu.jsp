@@ -1,6 +1,11 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="UTF-8">
 <title>メニュー</title>
 <link href="css/commons.css" rel="stylesheet">
@@ -8,24 +13,25 @@
 </head>
 <body>
   <div id="app">
-
-    <div class="header">
+	<header>
+	    <div class="header">
       <h1 class="site_logo"><a href="menu.html">商品管理システム</a></h1>
       <div class="user">
-        <p class="user_name">佐藤さん、こんにちは</p>
+        <p class="user_name">${fn:escapeXml(user.userName)}さん、こんにちは</p>
         <form class="logout_form" action="logout.html" method="get">
           <button class="logout_btn" type="submit">
             <img src="images/ドアアイコン.png">ログアウト</button>
         </form>
       </div>
     </div>
+	</header>
 
     <hr>
 
     <div class="btn"><a class="basic_btn regist" href="insert.html">新規登録</a></div>
     <p>成功メッセージ</p>
-    <form method="get" action="#" class="search_container">
-      <input type="text" size="25" placeholder="キーワード検索">
+    <form method="get" action="kadaiSerch" class="search_container">
+      <input type="text" size="25" placeholder="キーワード検索" name="keyword">
       <input type="submit" value="&#xf002">
     </form>
 
