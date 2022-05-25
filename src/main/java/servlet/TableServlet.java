@@ -43,46 +43,66 @@ public class TableServlet extends HttpServlet {
 	        // 文字化け対策
 	        request.setCharacterEncoding("UTF-8");
 	        // ログインID、パスワードを取得
-	        String key = request.getParameter("keyword");
-
-	        List<Product> list = null;
-	        String msg ="";
+	        String keyword = request.getParameter("keyword");
+	        String sort = request.getParameter("sort");
 	        
+	        
+	        List<Product> list = null;
+	        
+        	int count = 0;
+	        
+//	        String msg ="<form　id =\"TableServlet\"><div class=\"order\">"
+//	        		+ "<select class=\"base-text\" name = \"sort\">"
+//	        		+ "<option>並び替え</option>"
+//	        		+ "<option value=\"categoryId\">商品ID</option>"
+//	        		+ "<option value=\"caregory\">カテゴリ</option>"
+//	        		+ "<option value=\"priceLow\">単価：安い順</option>"
+//	        		+ "<option value=\"priceHigh\">単価：高い順</option>"
+//	        		+ "<option value=\"dayNew\">登録日：古い順</option>"
+//	        		+ "<option value=\"dayOld\">登録日：新しい順</option>"
+//	        		+ "</select>"
+//	        		+ "</form>"
+//	        		+ "</div>"
+//	        		+ "<thead><tr><th>商品ID</th><th>商品名</th><th>単価</th><th>カテゴリ</th><th>詳細</th></tr></thead><tbody>";
+        	
+        	String msg = "マインド";
+        	
+	        ProductService productService = new ProductService();
+        	
 	        // 入力値のチェック
-	        if (ParamUtil.isNullOrEmpty(key)) {
-	            // メッセージ設定
-	        	ProductService productService = new ProductService();
-	        	
+	        if (ParamUtil.isNullOrEmpty(keyword)) {
+	        		        	
 	        	list = productService.allProducts();
-	        	
-	        	msg = "<table><div class=\"caption\"><p>検索結果：10件</p></div>\r\n<div class=\"order\">"
-	        			+ "<select class=\"base-text\">"
-	        			+ "<option>並び替え</option>"
-	        			+ "<option>商品ID</option>"
-	        			+ "<option>カテゴリ</option>"
-	        			+ "<option>単価：安い順</option>"
-	        			+ "<option>単価：高い順</option>"
-	        			+ "<option>登録日：古い順</option>"
-	        			+ "<option>登録日：新しい順</option>"
-	        			+ "</select>"
-	        			+ "</div>"
-	        			+ "<thead><tr><th>商品ID</th><th>商品名</th><th>単価</th><th>カテゴリ</th><th>詳細</th></tr></thead><tbody>";
-	        	
-	        	
-	        	for(Product a: list) {
-	        		msg += ("<tr><td>" + a.getProduct_id() + "</td><td>" + a.getName() + "</td><td>" + a.getPrice() + "</td><td>" + a.getImage_path() + "</td><td><a class=\"detail_btn\" href=\"./detail.html\">詳細</a></td>");
+		        for(Product a: list) {
+	        		count++;
 	        	}
-	            
-	        	msg += "</tbody><table></div>";
-	        	
-	        	request.setAttribute("msg", msg);
-
-	            // 次画面指定
-	            request.getRequestDispatcher("menu.jsp").forward(request, response);
-	            return;
 	        }else {
-	        	request.getRequestDispatcher("menu.jsp").forward(request, response);
+	        	list = productService.selectByKeyword(keyword);
+	        	for(Product a: list) {
+	        		count++;
+	        	}
+
 	        }
+	        
+	        
+	        
+        	request.setAttribute("list", list);
+        	request.setAttribute("msg", msg);
+        	request.setAttribute("sort", sort);
+	        
+	        if(count == 0) {
+	        	request.setAttribute("errorSelect", "該当する結果はありません！");
+	        }
+	        
+	        String btn = request.getParameter("btn");
+	        if(btn != null) {
+		        if(!(btn.equals("delete"))) {
+		        	msg = "明らか";
+		        	request.setAttribute("msg", msg);
+		        }
+	        }
+        	request.setAttribute("count", count);
+        	request.getRequestDispatcher("menu.jsp").forward(request, response);
 	    }
 
 }

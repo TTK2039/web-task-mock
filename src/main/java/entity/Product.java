@@ -1,5 +1,7 @@
 package entity;
 
+import java.security.Timestamp;
+
 public class Product {
 
     private int id;
@@ -9,36 +11,47 @@ public class Product {
     private int price;
     private String image_path;
     private String description;
-    private int created_at;
-    private int updated_at;
+    private Timestamp created_at;
+    private Timestamp updated_at;
+    
+    private Categories category_name;
     
     public Product() {
     }
-
     
-    //絶対違う、カテゴリテーブルからJOINしたカテゴリネームはどこで初期化するか問題
-    public Product(String product_id, String name, int price, String image_path) {
+    public Product(int id, String name, int price, String category_name) {
 		super();
+		this.id = id;
+		this.name = name;
+		this.price = price;
+		this.category_name = new Categories(category_name);
+	}
+
+	public Product(int id, String product_id, String name, int price, String category_name) {
+		this.id = id;
 		this.product_id = product_id;
 		this.name = name;
 		this.price = price;
-		this.image_path = image_path;
+		this.category_name = new Categories(category_name);
 	}
-
-
-
-	public Product(int id, String product_id, int category_id, String name, int price, String image_path,
-			String description, int created_at, int updated_at) {
-		super();
+	
+	public Product(int id, String product_id, String name, int price, String category_name, String description) {
 		this.id = id;
+		this.product_id = product_id;
+		this.name = name;
+		this.price = price;
+		this.category_name = new Categories(category_name);
+		this.description = description;
+	}
+    
+
+	public Product(String product_id, String name, int price, int category_id, String description) {
+		super();
 		this.product_id = product_id;
 		this.category_id = category_id;
 		this.name = name;
 		this.price = price;
-		this.image_path = image_path;
 		this.description = description;
-		this.created_at = created_at;
-		this.updated_at = updated_at;
 	}
 
 	public int getId() {
@@ -97,20 +110,30 @@ public class Product {
 		this.description = description;
 	}
 
-	public int getCreated_at() {
+	public Timestamp getCreated_at() {
 		return created_at;
 	}
 
-	public void setCreated_at(int created_at) {
+	public void setCreated_at(Timestamp created_at) {
 		this.created_at = created_at;
 	}
 
-	public int getUpdated_at() {
+	public Timestamp getUpdated_at() {
 		return updated_at;
 	}
 
-	public void setUpdated_at(int updated_at) {
+	public void setUpdated_at(Timestamp updated_at) {
 		this.updated_at = updated_at;
+	}
+
+
+	public Categories getCategory_name() {
+		return category_name;
+	}
+
+
+	public void setCategory_name(Categories category_name) {
+		this.category_name = category_name;
 	}
 
 	

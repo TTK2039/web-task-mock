@@ -1,3 +1,9 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +15,7 @@
   <div class="header">
     <h1 class="site_logo"><a href="menu.html">商品管理システム</a></h1>
     <div class="user">
-      <p class="user_name">佐藤さん、こんにちは</p>
+      <p class="user_name">${fn:escapeXml(user.userName)}さん、こんにちは</p>
       <form class="logout_form" action="logout.html" method="get">
         <button class="logout_btn" type="submit">
           <img src="images/ドアアイコン.png">ログアウト</button>
@@ -27,17 +33,17 @@
         <fieldset class="label-130">
           <div>
             <label>商品ID</label>
-            <input type="text" name="loginId" value="10001" class="base-text">
+            <input type="text" name="pdId" value="${product.getProduct_id()}" class="base-text">
             <span class="error">エラーメッセージ</span>
           </div>
           <div>
             <label>商品名</label>
-            <input type="text" name="userName" value="マッキー(黒)" class="base-text">
+            <input type="text" name="pdName" value="${product.getName()}" class="base-text">
             <span class="error">エラーメッセージ</span>
           </div>
           <div>
             <label>単価</label>
-            <input type="text" name="tel" value="165" class="base-text">
+            <input type="text" name="price" value="${product.getPrice()}" class="base-text">
             <span class="error">エラーメッセージ</span>
           </div>
           <div>
@@ -51,19 +57,18 @@
           <div>
             <label>商品説明</label>
             <textarea name="description" class="base-text">
-ゼブラ株式会社
-線の太さ：太6.0mm、細1.5～2.0mm
+${ product.getDescription()}  
             </textarea>
           </div>
-          <div>
-            <label>画像</label>
-            <input type="file" name="file">
-            <span class="error">エラーメッセージ</span>
-          </div>
+<!--           <div> -->
+<!--             <label>画像</label> -->
+<!--             <input type="file" name="file"> -->
+<!--             <span class="error">エラーメッセージ</span> -->
+<!--           </div> -->
         </fieldset>
           <div class="btns">
             <button type="button" onclick="openModal()" class="basic_btn">更新</button>
-            <input type="button" onclick="location.href='./menu.html'" value="メニューに戻る" class="cancel_btn">
+            <input type="button" onclick="location.href='./menu.jsp'" value="メニューに戻る" class="cancel_btn">
           </div>
           <div id="modal">
             <p class="modal_message">更新しますか？</p>
@@ -78,4 +83,4 @@
   <div id="fadeLayer"></div>
 </body>
 </html>
-<!-- <script src="./js/commons.js"></script> -->
+<script src="./js/commons.js"></script>
