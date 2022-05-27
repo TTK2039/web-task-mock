@@ -6,7 +6,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+<c:if test="${empty user}">
+	<meta http-equiv="refresh" content="0;URL=index.jsp">
+</c:if>
 <meta charset="UTF-8">
 <title>メニュー</title>
 <link href="css/commons.css" rel="stylesheet">
@@ -20,12 +22,12 @@
 		<header>
 			<div class="header">
 				<h1 class="site_logo">
-					<a href="menu.html">商品管理システム</a>
+					<a href="menu.jsp">商品管理システム</a>
 				</h1>
 				<div class="user">
-					<p class="user_name">${fn:escapeXml(user.userName)}さん、こんにちは${msg}</p>
-					<form class="logout_form" action="logout.html" method="get">
-						<button class="logout_btn" type="submit">
+					<p class="user_name">${fn:escapeXml(user.userName)}さん、こんにちは</p>
+					<form class="logout_form" action="login" method="get">
+						<button class="logout_btn" type="submit" name="btn" value="logout">
 							<img src="images/ドアアイコン.png">ログアウト
 						</button>
 					</form>
@@ -34,31 +36,35 @@
 		</header>
 	</div>
 	<hr>
-
-	<div class="btn">
-		<a class="basic_btn regist" href="insert.jsp">新規登録</a>
-	</div>
+	<c:if test="${user.userId == 1}">
+		<div class="btn">
+			<a class="basic_btn regist" href="insert.jsp">新規登録</a>
+		</div>
+	</c:if>
 	<span class="error">${errorSelect}</span>
 	<form method="get" action="TableServlet" class="search_container ">
-		<input type="text" size="25" placeholder="キーワード検索" name="keyword">
-		<input type="submit" value="&#xf002">
+		<input type="text" size="25" placeholder="キーワード検索" name="keyword" id="keyword">
+
+		<input type="submit" value="&#xf002" name="find">
 	</form>
+
+	<div class="order">
+		<select			onChange="location.href='TableServlet?sort=' + value + '&find=&keyword=' + document.getElementById('keyword').value">
+			<option>並び替え</option>
+			<option value="sortId">商品ID</option>
+			<option value="sortCate">カテゴリ</option>
+			<option value="sortPriceLow">単価：安い順</option>
+			<option value="sortPriceHigh">単価：高い順</option>
+			<option value="sortDayOld">登録日：古い順</option>
+			<option value="sortDayNew">登録日：新しい順</option>
+		</select>
+	</div>
+	<p>${msg }</p>
 	<c:if test="${!(empty count) }">
+		<div class="caption">
+		<p>検索結果：${count }件<br>${resultSort }</p>
+	</div>
 		<table>
-			<div class="caption">
-				<p>検索結果：${count }件</p>
-			</div>
-			<div class="order">
-				<select class="base-text">
-					<option>並び替え</option>
-					<option>商品ID</option>
-					<option>カテゴリ</option>
-					<option>単価：安い順</option>
-					<option>単価：高い順</option>
-					<option>登録日：古い順</option>
-					<option>登録日：新しい順</option>
-				</select>
-			</div>
 			<thead>
 				<tr>
 					<th>商品ID</th>
@@ -68,19 +74,17 @@
 					<th>詳細</th>
 				</tr>
 			</thead>
-
 			<tbody>
-<!-- 				<template v-for="product in products"> -->
-					<c:forEach var="products" items="${list}">
-						<tr>
-							<td>${products.getProduct_id()}</td>
-							<td>${products.getName()}</td>
-							<td>${products.getPrice()}</td>
-							<td>${products.category_name.getcategory_name()}</td>
-							<td><a class="detail_btn" href="./detailServlet?id=${products.getId()}">詳細</a></td>
-						</tr>
-					</c:forEach>
-<!-- 				</template> -->
+				<c:forEach var="products" items="${list}">
+					<tr>
+						<td>${products.getProduct_id()}</td>
+						<td>${products.getName()}</td>
+						<td>${products.getPrice()}</td>
+						<td>${products.category_name.getName()}</td>
+						<td><a class="detail_btn"
+							href="./detailServlet?id=${products.getId()}">詳細</a></td>
+					</tr>
+				</c:forEach>
 			</tbody>
 
 		</table>

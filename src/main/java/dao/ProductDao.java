@@ -7,206 +7,141 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import entity.Categories;
 import entity.Product;
 
 public class ProductDao {
 
-//    private static final String SQL_SELECT_PRODUCTID = "SELECT * FROM products WHERE product_id = ?";
-//    private static final String SQL_SELECT_PRODUCTNAME = "SELECT * FROM products WHERE product_name = ?";
-//    private static final String SQL_SELECT_PRODUCTIDNAME ="SELECT * FROM products WHERE product_id = ? AND product_name = ?";
-//    private static final String SQL_FIND_ALL = "SELECT * FROM products ORDER BY product_id";
-//    private static final String SQL_SUM_PRICE = "SELECT sum(price)  FROM products";
-//    private static final String SQL_INSERT = "INSERT INTO products (product_name, price) VALUES(?, ?)";
-//    private static final String SQL_DELETE_FROM_ID = "DELETE FROM products WHERE product_id = ?";
-//    private static final String SQL_DELETE_FROM_NAME = "DELETE FROM products WHERE product_name=?";
-   
-    private static final String SQL_ALL_SELECT_TABLE = "SELECT p.id id, p.product_id 商品ID, p.name 商品名, p.price 単価, c.name カテゴリ FROM products p JOIN categories c ON p.category_id = c.id";
-    private static final String SQL_SELECT_BY_KEYWORD ="SELECT p.id id, p.product_id 商品ID, p.name 商品名, p.price 単価, c.name カテゴリ FROM products p JOIN categories c ON p.category_id = c.id WHERE p.name LIKE ? OR c.name LIKE ?";
-    private static final String SQL_INSERT = "INSERT INTO products (product_id, name, price, category_id, description) VALUES(?, ?, ?, ?, ?)";
-    private static final String SQL_DELETE = "DELETE FROM products WHERE product_id = ?";
-    private static final String SQL_SELECT_BY_ID ="SELECT p.id id, p.product_id 商品ID, p.name 商品名, p.price 単価, c.name カテゴリ, p.description 詳細 FROM products p JOIN categories c ON p.category_id = c.id WHERE p.id = ?";
-    private Connection connection;
+	//    private static final String SQL_SELECT_PRODUCTID = "SELECT * FROM products WHERE product_id = ?";
+	//    private static final String SQL_SELECT_PRODUCTNAME = "SELECT * FROM products WHERE product_name = ?";
+	//    private static final String SQL_SELECT_PRODUCTIDNAME ="SELECT * FROM products WHERE product_id = ? AND product_name = ?";
+	//    private static final String SQL_FIND_ALL = "SELECT * FROM products ORDER BY product_id";
+	//    private static final String SQL_SUM_PRICE = "SELECT sum(price)  FROM products";
+	//    private static final String SQL_INSERT = "INSERT INTO products (product_name, price) VALUES(?, ?)";
+	//    private static final String SQL_DELETE_FROM_ID = "DELETE FROM products WHERE product_id = ?";
+	//    private static final String SQL_DELETE_FROM_NAME = "DELETE FROM products WHERE product_name=?";
 
-    public ProductDao(Connection connection) {
-        this.connection = connection;
-    }
-    
-    public Product findById(int id) {
-    	try (PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_BY_ID)) {
-    		stmt.setInt(1, id);
-    		ResultSet rs = stmt.executeQuery();
-    		rs.next();
-              return new Product(rs.getInt("id"),rs.getString("商品id"), rs.getString("商品名"), rs.getInt("単価"), rs.getString("カテゴリ"), rs.getString("詳細"));
-    	} catch (SQLException e) {
-    		e.printStackTrace();
-    		return null;
-    	}
-    }
-    
-    public int productDelete(Product pd) {
-    	try (PreparedStatement stmt = connection.prepareStatement(SQL_DELETE)) {
-    		stmt.setString(1, pd.getProduct_id());
-    		return stmt.executeUpdate();
-    	} catch (SQLException e) {
-    		e.printStackTrace();
-    		return 0;
-    	}
-    }
-    
-    public int productInsert(Product pd) {
-    	try (PreparedStatement stmt = connection.prepareStatement(SQL_INSERT)) {
-    		stmt.setString(1, pd.getProduct_id());
-    		stmt.setString(2, pd.getName());
-    		stmt.setInt(3, pd.getPrice());
-    		stmt.setInt(4, pd.getCategory_id());
-    		stmt.setString(5, pd.getDescription());
-    		return stmt.executeUpdate();
-    	} catch (SQLException e) {
-    		e.printStackTrace();
-    		return 0;
-    	}
-    }
-    
-    
-    public List<Product> allProducts( ) {
-    	try (PreparedStatement stmt = connection.prepareStatement(SQL_ALL_SELECT_TABLE)) {
-    		List<Product> list = new ArrayList<>();
-            
-    		ResultSet rs = stmt.executeQuery();
+	private static final String SQL_ALL_SELECT_TABLE = "SELECT p.id id, p.product_id 商品ID, p.name 商品名, p.price 単価, c.name カテゴリ, p.created_at FROM products p JOIN categories c ON p.category_id = c.id";
+	private static final String SQL_SELECT_BY_KEYWORD ="SELECT p.id id, p.product_id 商品ID, p.name 商品名, p.price 単価, c.name カテゴリ, p.created_at  FROM products p JOIN categories c ON p.category_id = c.id WHERE p.name LIKE ? OR c.name LIKE ?";
+	private static final String SQL_INSERT = "INSERT INTO products (product_id, name, price, category_id, description, created_at, updated_at) VALUES(?, ?, ?, ?, ?, ?, ?)";
+	private static final String SQL_DELETE_BY_PDID = "DELETE FROM products WHERE product_id = ?";
+	private static final String SQL_SELECT_BY_ID ="SELECT p.id id, p.product_id 商品ID, p.name 商品名, p.price 単価, c.name カテゴリ, p.description 詳細 FROM products p JOIN categories c ON p.category_id = c.id WHERE p.id = ?";
+	private static final String SQL_UPDATE_BY_PDID ="UPDATE Products SET product_id = ?, name = ?, price = ?, category_id = ?, description = ?, updated_at = ? WHERE id = ?";
+	private Connection connection;
+	public ProductDao(Connection connection) {
+		this.connection = connection;
+	}
 
-    		while (rs.next()) {
-    			Product pd = new Product(rs.getInt("id"),rs.getString("商品id"), rs.getString("商品名"), rs.getInt("単価"), rs.getString("カテゴリ"));
-    			list.add(pd);
-    		}	
-    		return list;
-    	} catch (SQLException e) {
-    		e.printStackTrace();
-    		return null;
-    	}
-    }
-    
-    public List<Product> selectByKeyword(String keyword) {
-        try (PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_BY_KEYWORD)) {
-        	List<Product> list = new ArrayList<>();
+	public List<Categories> selectCategory() {
+		try (PreparedStatement stmt = connection.prepareStatement(SQL_UPDATE_BY_PDID)) {
+			List<Categories> list = new ArrayList<>();
 
-            stmt.setString(1, "%"+ keyword + "%");
-            stmt.setString(2, "%"+ keyword + "%");
-            
-            ResultSet rs = stmt.executeQuery();
+			ResultSet rs = stmt.executeQuery();
 
-            while (rs.next()) {
-                Product pd = new Product(rs.getInt("id"),rs.getString("商品id"), rs.getString("商品名"), rs.getInt("単価"), rs.getString("カテゴリ"));
-                list.add(pd);
-            }
-            return list;
-        } catch (SQLException e) {
-        	e.printStackTrace();
-        	return null;
-        }
-    }
-    
-    
-//    public Product findByProductId(String id) {
-//        try (PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_PRODUCTID)) {
-//        	
-//        	int idInt = Integer.parseInt(id);
-//        	
-//            stmt.setInt(1, idInt);
-//
-//            ResultSet rs = stmt.executeQuery();
-//
-//            if (rs.next()) {
-//                return new Product(rs.getInt("product_id"), rs.getString("product_name"), rs.getInt("price"));
-//            } else {
-//                return null;
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-    
-//    public Product findByProductIDandName(String id, String name) {
-//        try (PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_PRODUCTIDNAME)) {
-//        	int idInt = Integer.parseInt(id);
-//        	stmt.setInt(1, idInt);
-//        	stmt.setString(2, name);
-//
-//            ResultSet rs = stmt.executeQuery();
-//
-//            if (rs.next()) {
-//                return new Product(rs.getInt("product_id"), rs.getString("product_name"), rs.getInt("price"));
-//            } else {
-//                return null;
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-    
-    
-    
-//    public List<Product> findAll () {
-//        List<Product> list = new ArrayList<>();
-//    	
-//    	try (PreparedStatement stmt = connection.prepareStatement(SQL_FIND_ALL)) {
-//
-//            ResultSet rs = stmt.executeQuery();
-//            while (rs.next()) {
-//            	Product  a =  new Product(rs.getInt("product_id"), rs.getString("product_name"), rs.getInt("price"));
-//                list.add(a);
-//            }
-//            return list;
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-    
-//    public int sumPrice () {
-//    	try (PreparedStatement stmt = connection.prepareStatement(SQL_SUM_PRICE)) {
-//
-//            ResultSet rs = stmt.executeQuery();
-//            int sum = 0;
-//            while (rs.next()) {
-//                sum = rs.getInt("sum");
-//            }
-//            return sum;
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-    
-//    public int registerchan (Product pd) {
-//    	try (PreparedStatement stmt = connection.prepareStatement(SQL_INSERT)) {
-//    		
-//    		stmt.setString(1, pd.getProductName());
-//    		stmt.setInt(2, pd.getPrice());
-//    		
-//            return  stmt.executeUpdate();
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-    
-//    public int deleteFromID (Product pd) {
-//    	try (PreparedStatement stmt = connection.prepareStatement(SQL_DELETE_FROM_ID)) {
-//    		
-//    		stmt.setInt(1, pd.getProductId());
-//    		
-//            return  stmt.executeUpdate();
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-    
-//    public int deleteFromName (Product pd) {
-//    	try (PreparedStatement stmt = connection.prepareStatement(SQL_DELETE_FROM_NAME)) {
-//    		
-//    		stmt.setString(1, pd.getProductName());
-//    		
-//            return  stmt.executeUpdate();
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+			while (rs.next()) {
+				Categories cd = new Categories(rs.getInt("id"),rs.getString("name"));
+				list.add(cd);
+			}	
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+
+	}
+
+	//UPDATE Products SET product_id = ?, name = ?, price = ?, category_id = ?, description = ? WHERE product_id = ?
+	public int updateById(Product pd) {
+		try (PreparedStatement stmt = connection.prepareStatement(SQL_UPDATE_BY_PDID)) {
+			stmt.setString(1, pd.getProduct_id());
+			stmt.setString(2, pd.getName());
+			stmt.setInt(3, pd.getPrice());
+			stmt.setInt(4, pd.getCategory_id());
+			stmt.setString(5, pd.getDescription());
+			stmt.setTimestamp(6, pd.getUpdated_at());
+			stmt.setInt(7, pd.getId()); 
+			return stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
+
+	//UPDATE Products SET product_id = ?, name = ?, price = ?, category_id = ?, description = ? WHERE product_id = ?  
+	public Product findById(int id) {
+		try (PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_BY_ID)) {
+			stmt.setInt(1, id);
+			ResultSet rs = stmt.executeQuery();
+			rs.next();
+			return new Product(rs.getInt("id"),rs.getString("商品id"), rs.getString("商品名"), rs.getInt("単価"), rs.getString("カテゴリ"), rs.getString("詳細"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public int deleteByPdId(String pdId) {
+		try (PreparedStatement stmt = connection.prepareStatement(SQL_DELETE_BY_PDID)) {
+			stmt.setString(1, pdId);
+			return stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
+	public int productInsert(Product pd) {
+		try (PreparedStatement stmt = connection.prepareStatement(SQL_INSERT)) {
+			stmt.setString(1, pd.getProduct_id());
+			stmt.setString(2, pd.getName());
+			stmt.setInt(3, pd.getPrice());
+			stmt.setInt(4, pd.getCategory_id());
+			stmt.setString(5, pd.getDescription());
+			stmt.setTimestamp(6, pd.getCreated_at());
+			stmt.setTimestamp(7, pd.getUpdated_at());
+			return stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
+
+	public List<Product> allProducts( ) {
+		try (PreparedStatement stmt = connection.prepareStatement(SQL_ALL_SELECT_TABLE)) {
+			List<Product> list = new ArrayList<>();
+
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				Product pd = new Product(rs.getInt("id"),rs.getString("商品id"), rs.getString("商品名"), rs.getInt("単価"),rs.getString("カテゴリ"), rs.getTimestamp("created_at"));
+				list.add(pd);
+			}	
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public List<Product> selectByKeyword(String keyword) {
+		try (PreparedStatement stmt = connection.prepareStatement(SQL_SELECT_BY_KEYWORD)) {
+			List<Product> list = new ArrayList<>();
+
+			stmt.setString(1, "%"+ keyword + "%");
+			stmt.setString(2, "%"+ keyword + "%");
+
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				Product pd = new Product(rs.getInt("id"),rs.getString("商品id"), rs.getString("商品名"), rs.getInt("単価"), rs.getString("カテゴリ"), rs.getTimestamp("created_at"));
+				list.add(pd);
+			}
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }
 

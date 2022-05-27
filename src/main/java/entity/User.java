@@ -2,47 +2,47 @@ package entity;
 
 public class User {
 	private int userId;
-    private String loginId;
-    private String password;
-    private String name;
-    private int role;
-    private int created_at;
-    private int updated_at;
-    
-    public User() {
-    }
-    
-    public User(String loginId, String password) {
-    	this.loginId = loginId;
-    	this.password = password;
-    }
-    
-    public User(int userId, String loginId, String password) {
-        this.userId = userId;
-        this.loginId = loginId;
-        this.password = password;
-    }
-    
-    public User(int id, String logId, String password, String name, int role, int cr, int up) {
-    	this.userId = id;
-    	this.loginId = logId;
-    	this.password = password;
-    	this.name = name;
-    	this.role = role;
-    	this.created_at = cr;
-    	this.updated_at = up;
-    }
-//    public User(ResultSet rs) {
-//		try {
-//			this.userId = rs.getInt("userId");
-//			this.loginId = rs.getString("loginId");
-//			this.password = rs.getString("password");
-//			this.name = rs.getString("name");
-//			this.role = rs.getInt("role");
-//			this.created_at = rs.getInt("created_at");
-//			this.updated_at = rs.getInt("updated_at");
-//		} catch (SQLException e) {}
-//	}
+	private String loginId;
+	private String password;
+	private String name;
+	private int role;
+	private int created_at;
+	private int updated_at;
+
+	public User() {
+	}
+
+	public User(String loginId, String password) {
+		this.loginId = loginId;
+		this.password = password;
+	}
+
+	public User(int userId, String loginId, String password) {
+		this.userId = userId;
+		this.loginId = loginId;
+		this.password = password;
+	}
+
+	public User(int id, String logId, String password, String name, int role, int cr, int up) {
+		this.userId = id;
+		this.loginId = logId;
+		this.password = password;
+		this.name = name;
+		this.role = role;
+		this.created_at = cr;
+		this.updated_at = up;
+	}
+	//    public User(ResultSet rs) {
+		//		try {
+			//			this.userId = rs.getInt("userId");
+			//			this.loginId = rs.getString("loginId");
+	//			this.password = rs.getString("password");
+	//			this.name = rs.getString("name");
+	//			this.role = rs.getInt("role");
+	//			this.created_at = rs.getInt("created_at");
+	//			this.updated_at = rs.getInt("updated_at");
+	//		} catch (SQLException e) {}
+	//	}
 
 	public int getUserId() {
 		return userId;

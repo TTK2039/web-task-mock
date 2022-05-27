@@ -4,27 +4,27 @@ import java.security.Timestamp;
 
 public class Categories {
 	private int id;
-    private String category_name;
+    private String name;
 	private Timestamp created_at;
     private Timestamp updated_at;
     
-    public Categories(int id, String category_name, Timestamp created_at, Timestamp updated_at) {
+    public Categories(int id, String name, Timestamp created_at, Timestamp updated_at) {
 		super();
 		this.id = id;
-		this.category_name = category_name;
+		this.name = name;
 		this.created_at = created_at;
 		this.updated_at = updated_at;
 	}
     
-	public Categories(int id, String category_name) {
+	public Categories(int id, String name) {
 		super();
 		this.id = id;
-		this.category_name = category_name;
+		this.name = name;
 	}
 
-	public Categories(String category_name) {
+	public Categories(String name) {
 		super();
-		this.category_name = category_name;
+		this.name = name;
 	}
 
 	public Categories() {
@@ -37,11 +37,11 @@ public class Categories {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getcategory_name() {
-		return category_name;
+	public String getName() {
+		return name;
 	}
-	public void setcategory_name(String category_name) {
-		this.category_name = category_name;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public Timestamp getCreated_at() {
 		return created_at;

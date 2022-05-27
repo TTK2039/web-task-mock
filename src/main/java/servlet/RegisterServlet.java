@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -25,6 +26,7 @@ public class RegisterServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 文字化け対策
         request.setCharacterEncoding("UTF-8");
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         
         String pdId = request.getParameter("pdId");
         String pdName = request.getParameter("pdName");
@@ -67,9 +69,9 @@ public class RegisterServlet extends HttpServlet {
 //		
 //		String path=getServletContext().getRealPath("/upload");
 		
-        Product pd = new Product(pdId, pdName, price, roleId, description);
+        Product pd = new Product(pdId, pdName, price, roleId, description, timestamp, timestamp);
         ProductService productService = new ProductService();
-        
+
         int a = productService.insertProduct(pd);
         
         if(a == 1) {

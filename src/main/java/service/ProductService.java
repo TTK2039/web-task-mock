@@ -8,6 +8,16 @@ import entity.Product;
 import util.DbUtil;
 public class ProductService {
 	
+	public int updateById(Product pd) {
+		try (Connection conn = DbUtil.getConnection()) {
+        	ProductDao pdDao = new ProductDao(conn);
+            return pdDao.updateById(pd);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+	}
+	
 	public Product findById(int id) {
 		try (Connection conn = DbUtil.getConnection()) {
         	ProductDao pdDao = new ProductDao(conn);
@@ -18,10 +28,10 @@ public class ProductService {
         }
 	}
 	
-	public int pruductDelete(Product pd) {
+	public int deleteByPdId(String pdId) {
 		try (Connection conn = DbUtil.getConnection()) {
         	ProductDao pdDao = new ProductDao(conn);
-            return pdDao.productDelete(pd);
+            return pdDao.deleteByPdId(pdId);
         } catch (Exception e) {
             e.printStackTrace();
             return 0;

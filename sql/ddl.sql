@@ -23,7 +23,7 @@ create table products(
     , price int 
     , image_path varchar(255)
     , description varchar(2000)
-    , created_at timestamp
-    , updated_at timestamp
+    , created_at timestamp not null
+    , updated_at timestamp not null
 );
 

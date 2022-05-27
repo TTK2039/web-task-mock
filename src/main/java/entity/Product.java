@@ -1,6 +1,6 @@
 package entity;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 public class Product {
 
@@ -27,14 +27,28 @@ public class Product {
 		this.category_name = new Categories(category_name);
 	}
 
-	public Product(int id, String product_id, String name, int price, String category_name) {
+	public Product(int id, String product_id, String name, int price, String category_name, Timestamp created) {
 		this.id = id;
 		this.product_id = product_id;
 		this.name = name;
 		this.price = price;
 		this.category_name = new Categories(category_name);
+		this.created_at = created;
 	}
 	
+	
+	
+	public Product(int id, String product_id, String name, int price, int category_id, String description, Timestamp updated_time) {
+		super();
+		this.id = id;
+		this.product_id = product_id;
+		this.category_id = category_id;
+		this.name = name;
+		this.price = price;
+		this.description = description;
+		this.updated_at = updated_time;
+	}
+
 	public Product(int id, String product_id, String name, int price, String category_name, String description) {
 		this.id = id;
 		this.product_id = product_id;
@@ -43,15 +57,35 @@ public class Product {
 		this.category_name = new Categories(category_name);
 		this.description = description;
 	}
+	
+	public Product(int id, String product_id, String name, int price, String category_name, String description, Timestamp timestamp) {
+		this.id = id;
+		this.product_id = product_id;
+		this.name = name;
+		this.price = price;
+		this.category_name = new Categories(category_name);
+		this.description = description;
+		this.updated_at = timestamp;
+	}
     
 
-	public Product(String product_id, String name, int price, int category_id, String description) {
+	public Product(String product_id, String name, int price, int category_id,  String description) {
 		super();
 		this.product_id = product_id;
 		this.category_id = category_id;
 		this.name = name;
 		this.price = price;
 		this.description = description;
+	}
+
+	public Product(String product_id, String name, int price, int roleId, String description, Timestamp created_at, Timestamp updated_at) {
+		this.product_id = product_id;
+		this.category_id = roleId;
+		this.name = name;
+		this.price = price;
+		this.description = description;
+		this.created_at = created_at;
+		this.updated_at = updated_at;
 	}
 
 	public int getId() {
