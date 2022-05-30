@@ -63,7 +63,7 @@ public class ProductDao {
 			return stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return -1;
+			return 0;
 		}
 	}
 

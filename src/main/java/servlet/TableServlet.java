@@ -33,9 +33,9 @@ public class TableServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPOST(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		doGet(request, response);
 	}
 
 	/**
@@ -45,8 +45,8 @@ public class TableServlet extends HttpServlet {
 		// 文字化け対策
 		request.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		
+        //入力情報受け取り
 		String keyword = request.getParameter("keyword");
 		String find = request.getParameter("find");
 		String btn = request.getParameter("btn");
@@ -59,13 +59,16 @@ public class TableServlet extends HttpServlet {
 		String priceStr = request.getParameter("price");
 		String roleIdStr = request.getParameter("roleId");
 		String description = request.getParameter("description");
-				
+		
+		//
 		int count = 0;
 		int error = 0;
 		String msg = "";
 		List<Product> list = null;
 		ProductService pdService = new ProductService();
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		
+		//更新画面の処理
 		if(btn != null && btn.equals("update")) {			
 			//入力されているかどうか
 	        if (ParamUtil.isNullOrEmpty(pdId)) {
@@ -108,7 +111,9 @@ public class TableServlet extends HttpServlet {
 				request.setAttribute("msg", msg);
 				request.getRequestDispatcher("updateInput.jsp").forward(request, response);
 			}
-		}		
+		}
+		
+		//削除画面の処理
 		if(btn != null && btn.equals("delete")) {
 			int a = pdService.deleteByPdId(pdId);
 			if(a == 1) {
@@ -121,14 +126,10 @@ public class TableServlet extends HttpServlet {
 				request.setAttribute("msg", msg);
 				request.getRequestDispatcher("detail.jsp").forward(request, response);
 			}
-
-			//	        	msg = (a == 1) ? "削除に成功しました" : "削除に失敗しました。";
-
 		}
-		
 
-		
-		if(find != null) {
+		//メニュー画面
+//		if(find != null) {
 
 			// 入力値のチェック
 			if (ParamUtil.isNullOrEmpty(keyword)) {
@@ -143,7 +144,7 @@ public class TableServlet extends HttpServlet {
 					count++;
 				}
 			}
-//			list.sort((p1,p2) -> p1.getPrice() >= p2.getPrice() ? 1: -1);
+			//並び替え
 			if(sort != null) {
 				 switch (sort) {
 		         case "sortId":
@@ -164,9 +165,11 @@ public class TableServlet extends HttpServlet {
 		        	 break;
 		         case "sortDayOld":
 		        	 list.sort((p1, p2) -> p1.getCreated_at().compareTo(p2.getCreated_at()));
+			 		 request.setAttribute("resultSort", "現在 登録日:古い順です");
 		        	 break;
 		         case "sortDayNew":
 		        	 list.sort((p1, p2) -> p2.getCreated_at().compareTo(p1.getCreated_at()));
+			 		 request.setAttribute("resultSort", "現在 登録日:新しい順です");
 		        	 break;
 		         default:
 		        	 break;
@@ -185,7 +188,7 @@ public class TableServlet extends HttpServlet {
 			request.setAttribute("count", count);
 			request.getRequestDispatcher("menu.jsp").forward(request, response);
 
-		}
+//		}
 	}
 
 }

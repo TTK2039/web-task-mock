@@ -58,16 +58,15 @@ public class LoginServlet extends HttpServlet {
 			
 			session.setAttribute("cdList", cdList);
 			// 表示メッセージの受け渡し
-			request.getRequestDispatcher("menu.jsp").forward(request, response);
+			request.getRequestDispatcher("TableServlet").forward(request, response);
 		}else{
-			msg = "ログインにしっぱいしました　";
+			msg = "IDまたはPASSが不正です";
 			request.setAttribute("msg", msg);
 			request.getRequestDispatcher("index.jsp").forward(request, response);
 
 		}
 	}
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub   
 		HttpSession session = request.getSession();
 
 		String btn = request.getParameter("btn");

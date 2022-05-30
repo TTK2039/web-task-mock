@@ -72,9 +72,8 @@
 					</div>
 				</fieldset>
 				<div class="btns">
-					<!--         submitじゃなくて確認ダイアログが出るようにする -->
-					<button type="submit" onclick="openModal()" class="basic_btn">登録</button>
-					<input type="button" onclick="location.href='./menu.jsp'"
+					<button type="button" onclick="openModal()" class="basic_btn">登録</button>
+					<input type="button" onclick="location.href='TableServlet'"
 						value="戻る" class="cancel_btn">
 				</div>
 				<div id="modal">
@@ -90,4 +89,5 @@
 	<div id="fadeLayer"></div>
 </body>
 </html>
-<SCRIPT SRC="./JS/COMMONS.JS"></SCRIPT>
+
+<script src="./js/commons.js"></script>

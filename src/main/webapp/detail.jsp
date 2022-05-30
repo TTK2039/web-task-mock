@@ -71,7 +71,7 @@ ${ product.getDescription()}
 							<input type="button" onclick="location.href='./updateInput.jsp'"
 								value="編集" class="basic_btn" name="">
 						</c:if>
-						<input type="button" onclick="location.href='./menu.jsp'"
+						<input type="button" onclick="location.href='TableServlet'"
 							value="戻る" class="cancel_btn">
 					</div>
 					<div id="modal">

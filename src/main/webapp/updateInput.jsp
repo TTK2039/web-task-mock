@@ -77,7 +77,7 @@ ${ product.getDescription()}
 				</fieldset>
 				<div class="btns">
 					<button type="button" onclick="openModal()" class="basic_btn">更新</button>
-					<input type="button" onclick="location.href='./menu.jsp'"
+					<input type="button" onclick="location.href='TableServlet'"
 						value="メニューに戻る" class="cancel_btn">
 				</div>
 				<div id="modal">
